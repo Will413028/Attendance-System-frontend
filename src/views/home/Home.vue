@@ -15,9 +15,9 @@
         </div>
       </el-card>
       <el-card shadow="hover" style="margin-top: 20px" height="450px">
-        <el-table :data="tableData">
+        <el-table :data="attendanceData">
           <el-table-column
-            v-for="(val, key) in tableLabel"
+            v-for="(val, key) in attendanceLabel"
             :key="key"
             :prop="key"
             :label="val"
@@ -36,23 +36,23 @@ import { defineComponent, getCurrentInstance, onMounted, ref } from "vue";
 export default defineComponent({
   setup() {
     const {proxy} = getCurrentInstance();
-    let tableData = ref([]);
-    let tableLabel = {
+    let attendanceData = ref([]);
+    let attendanceLabel = {
       attend_date: "attend_date",
       clock_in_time: "clock_in_time",
       clock_out_time: "clock_out_time",
       status: "status",
     };
-    const getTableList = async () => {
+    const getAttendanceList = async () => {
         let res = await proxy.$api.getTableData();
-        tableData.value = res.tableData;
+        attendanceData.value = res.data;
     };
     onMounted(() => {
-      getTableList();
+      getAttendanceList();
     });
     return {
-      tableData,
-      tableLabel,
+      attendanceData,
+      attendanceLabel,
     };
   },
 });

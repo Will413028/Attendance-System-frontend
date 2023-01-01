@@ -14,7 +14,10 @@ service.interceptors.request.use((req) => {
 
 service.interceptors.response.use((res) => {
     const { code, data, message } = res.data
-    if (code === 200) {
+    const status_code = res.status
+    if (status_code === 200) {
+        return data
+    } else if (code === 200) {
         return data
     } else {
         ElMessage.error(message || default_error)

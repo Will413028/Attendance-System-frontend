@@ -6,7 +6,7 @@ export default {
             url: '/attendance',
             method: 'get',
             data: params,
-            mock: true
+            mock: false
         })
     }
 }
