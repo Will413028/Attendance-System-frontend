@@ -11,6 +11,7 @@
         :index="item.path"
         v-for="item in noChildren()"
         :key="item.path"
+        @click="clickMenu(item)"
       >
         <component class="icons" :is="item.icon"></component>
         <span>{{ item.label }}</span>
@@ -29,6 +30,7 @@
             :index="subItem.path"
             v-for="(subItem, subIndex) in item.children"
             :key="subIndex"
+            @click="clickMenu(subItem)"
           >
             <component class="icons" :is="subItem.icon"></component>
             <span>{{ subItem.label }}</span>
@@ -40,6 +42,7 @@
 </template>
 
 <script>
+import { useRouter } from "vue-router";
 export default {
   setup() {
     const list = [
@@ -72,6 +75,8 @@ export default {
       },
     ];
 
+    const router = useRouter();
+
     const noChildren = () => {
       return list.filter((item) => !item.children);
     };
@@ -79,10 +84,15 @@ export default {
     const hasChildren = () => {
       return list.filter((item) => item.children);
     };
-
+    const clickMenu = (item) => {
+      router.push({
+        name: item.name,
+      });
+    };
     return {
       noChildren,
       hasChildren,
+      clickMenu,
     };
   },
 };
@@ -93,5 +103,13 @@ export default {
 .icons {
   width: 18px;
   height: 18px;
+}
+.el-menu {
+  border-right: none;
+  h3 {
+    line-height: 48px;
+    color: #fff;
+    text-align: center;
+  }
 }
 </style>
