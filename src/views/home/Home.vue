@@ -31,11 +31,11 @@
 </template>
 
 <script>
-import { defineComponent, onMounted, ref } from "vue";
-import axios from "axios";
+import { defineComponent, getCurrentInstance, onMounted, ref } from "vue";
 
 export default defineComponent({
   setup() {
+    const {proxy} = getCurrentInstance();
     let tableData = ref([]);
     let tableLabel = {
       attend_date: "attend_date",
@@ -44,11 +44,8 @@ export default defineComponent({
       status: "status",
     };
     const getTableList = async () => {
-      await axios.get("/attendance").then((res) => {
-        if (res.data.code == 200) {
-          tableData.value = res.data.data.tableData;
-        }
-      });
+        let res = await proxy.$api.getTableData();
+        tableData.value = res.tableData;
     };
     onMounted(() => {
       getTableList();

@@ -7,6 +7,8 @@
       :collapse="!$store.state.isCollapse"
       :collapse-transition="false"
     >
+      <h3 v-show="$store.state.isCollapse">Dashboard setting</h3>
+      <h3 v-show="!$store.state.isCollapse">Dashboard</h3>
       <el-menu-item
         :index="item.path"
         v-for="item in noChildren()"
@@ -42,7 +44,7 @@
 </template>
 
 <script>
-import { useRouter } from "vue-router";
+import {useRouter} from 'vue-router';
 export default {
   setup() {
     const list = [
@@ -84,15 +86,15 @@ export default {
     const hasChildren = () => {
       return list.filter((item) => item.children);
     };
-    const clickMenu = (item) => {
+    const clickMenu = (item) =>{
       router.push({
         name: item.name,
-      });
+      })
     };
     return {
       noChildren,
       hasChildren,
-      clickMenu,
+      clickMenu
     };
   },
 };
