@@ -1,7 +1,7 @@
 <template>
   <el-header>
     <div class="l-content">
-      <el-button size="small">
+      <el-button size="small" plain @click="handleCollaase">
         <el-icon :size="20">
           <Menu />
         </el-icon>
@@ -10,7 +10,7 @@
     <div class="r-content"></div>
     <el-dropdown>
       <span class="el-dropdown-link">
-        <img class="user" :src="getImgage_src('vue.svg')">
+        <img class="user" :src="getImgage_src('vue.svg')" />
         <el-icon class="el-icon--right">
           <arrow-down />
         </el-icon>
@@ -28,16 +28,23 @@
 </template>
 
 <script>
-export default {
+import { defineComponent } from "vue";
+import { useStore } from "vuex";
+export default defineComponent({
   setup() {
-    const getImgage_src = (base) =>{
+    let store = useStore();
+    let getImgage_src = (base) => {
       return new URL(`../assets/${base}`, import.meta.url).href;
     };
+    let handleCollaase = () => {
+      store.commit("updateIsCollapse");
+    };
     return {
-      getImgage_src
-    }
-  },
-}
+      getImgage_src,
+      handleCollaase
+    };
+  }
+});
 </script>
 
 
