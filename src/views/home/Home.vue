@@ -31,54 +31,28 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
+import axios from "axios";
 
 export default defineComponent({
   setup() {
-    let tableData = [
-      {
-        attend_date: "2022-12-25",
-        clock_in_time: "2022-12-25 14:31:43",
-        clock_out_time: "2022-12-25 20:57:06",
-        status: "present",
-      },
-      {
-        attend_date: "2022-12-26",
-        clock_in_time: "2022-12-26 14:31:43",
-        clock_out_time: "2022-12-26 20:57:06",
-        status: "present",
-      },
-      {
-        attend_date: "2022-12-27",
-        clock_in_time: "2022-12-27 14:31:43",
-        clock_out_time: "2022-12-27 20:57:06",
-        status: "present",
-      },
-      {
-        attend_date: "2022-12-28",
-        clock_in_time: "2022-12-28 14:31:43",
-        clock_out_time: "2022-12-28 20:57:06",
-        status: "present",
-      },
-      {
-        attend_date: "2022-12-29",
-        clock_in_time: "2022-12-29 14:31:43",
-        clock_out_time: "2022-12-29 20:57:06",
-        status: "present",
-      },
-      {
-        attend_date: "2022-12-30",
-        clock_in_time: "2022-12-30 14:31:43",
-        clock_out_time: "",
-        status: "absent",
-      },
-    ];
+    let tableData = ref([]);
     let tableLabel = {
       attend_date: "attend_date",
       clock_in_time: "clock_in_time",
       clock_out_time: "clock_out_time",
       status: "status",
     };
+    const getTableList = async () => {
+      await axios.get("/attendance").then((res) => {
+        if (res.data.code == 200) {
+          tableData.value = res.data.data.tableData;
+        }
+      });
+    };
+    onMounted(() => {
+      getTableList();
+    });
     return {
       tableData,
       tableLabel,
