@@ -1,6 +1,6 @@
 <template>
   <el-row class="home" :gutter="20">
-    <el-col :span="8" style="margin-top: 20px">
+    <el-col :span="15" style="margin-top: 20px">
       <el-card shadow="hover">
         <div class="user">
           <img src="../../assets/vue.svg" />
@@ -26,7 +26,11 @@
         </el-table>
       </el-card>
     </el-col>
-    <el-col :span="16" style="margin-top: 20px"></el-col>
+    <el-col :span="16" style="margin-top: 20px">
+      <div>
+        <el-card :body-style="{ display: 'flex', padding: 0 }"> </el-card>
+      </div>
+    </el-col>
   </el-row>
 </template>
 
@@ -35,7 +39,7 @@ import { defineComponent, getCurrentInstance, onMounted, ref } from "vue";
 
 export default defineComponent({
   setup() {
-    const {proxy} = getCurrentInstance();
+    const { proxy } = getCurrentInstance();
     let attendanceData = ref([]);
     let attendanceLabel = {
       attend_date: "attend_date",
@@ -44,8 +48,8 @@ export default defineComponent({
       status: "status",
     };
     const getAttendanceList = async () => {
-        let res = await proxy.$api.getTableData();
-        attendanceData.value = res.data;
+      let res = await proxy.$api.getTableData();
+      attendanceData.value = res.data;
     };
     onMounted(() => {
       getAttendanceList();
