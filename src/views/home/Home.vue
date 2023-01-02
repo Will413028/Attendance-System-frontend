@@ -26,6 +26,17 @@
         </el-table>
       </el-card>
     </el-col>
+    <el-card
+      shadow="hover"
+      style="margin-top: 20px; width: 450px; height: 450px"
+    >
+      <el-button style="margin-top: 10px; width: 400px; height: 200px">
+        Clock in
+      </el-button>
+      <el-button style="margin-top: 50px; width: 400px; height: 50px">
+        Clock in
+      </el-button>
+    </el-card>
     <el-col :span="16" style="margin-top: 20px">
       <div>
         <el-card :body-style="{ display: 'flex', padding: 0 }"> </el-card>
