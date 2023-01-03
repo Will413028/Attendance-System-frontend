@@ -26,13 +26,8 @@
         </el-table>
       </el-card>
     </el-col>
-    <el-card
-      shadow="hover"
-      style="margin-top: 20px; width: 450px; height: 450px"
-    >
-      <el-button style="margin-top: 10px; width: 400px; height: 200px">
-        Clock in
-      </el-button>
+    <el-card shadow="hover" style="margin-top: 20px; width: 450px; height: 800px">
+      <vue-qrcode value="http://host/?id&date" :options="{ width: 400 }"></vue-qrcode>
       <el-button style="margin-top: 50px; width: 400px; height: 50px">
         Clock in
       </el-button>
