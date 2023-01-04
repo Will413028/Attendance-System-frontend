@@ -2,7 +2,6 @@ import { createStore } from 'vuex';
 
 export default createStore({
     state: {
-        isCollapse: true,
         user: {
             id: 0,
             name: "",
@@ -12,9 +11,6 @@ export default createStore({
         token: ''
     },
     mutations: {
-        updateIsCollapse(state, payload) {
-            state.isCollapse = !state.isCollapse
-        },
         setToken(state, val) {
             state.token = val
             localStorage.setItem('token', JSON.stringify(val))
