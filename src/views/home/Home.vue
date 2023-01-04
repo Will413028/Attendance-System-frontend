@@ -28,7 +28,7 @@
     </el-col>
     <el-card shadow="hover" style="margin-top: 20px; width: 450px; height: 800px">
       <vue-qrcode value="http://host/?id&date" :options="{ width: 400 }"></vue-qrcode>
-      <el-button style="margin-top: 50px; width: 400px; height: 50px">
+      <el-button style="margin-top: 50px; width: 400px; height: 50px" @click="clockin">
         Clock in
       </el-button>
     </el-card>
@@ -42,6 +42,7 @@
 
 <script>
 import { defineComponent, getCurrentInstance, onMounted, ref } from "vue";
+import axios from "axios";
 
 export default defineComponent({
   setup() {
@@ -54,8 +55,13 @@ export default defineComponent({
       status: "status",
     };
     const getAttendanceList = async () => {
-      let res = await proxy.$api.getTableData();
+      let data = {user_id: 8}
+      let res = await proxy.$api.getTableData(data);
       attendanceData.value = res.data;
+    };
+    const clockin = async () => {
+      let body = { user_id: 2}
+      await axios.post("http://127.0.0.1:3000/attendance", body,{headers: { token: JSON.parse(localStorage.getItem("token")) }});
     };
     onMounted(() => {
       getAttendanceList();
@@ -63,6 +69,7 @@ export default defineComponent({
     return {
       attendanceData,
       attendanceLabel,
+      clockin
     };
   },
 });
