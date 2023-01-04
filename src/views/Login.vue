@@ -2,19 +2,11 @@
   <el-form :model="loginForm" class="login-container">
     <h3>Login</h3>
     <el-form-item>
-      <el-input
-        type="input"
-        placeholder="account"
-        v-model="loginForm.account"
-      >
+      <el-input type="input" placeholder="account" v-model="loginForm.account">
       </el-input>
     </el-form-item>
     <el-form-item>
-      <el-input
-        type="password"
-        placeholder="password"
-        v-model="loginForm.password"
-      >
+      <el-input type="password" placeholder="password" v-model="loginForm.password">
       </el-input>
     </el-form-item>
     <el-form-item>
@@ -23,18 +15,25 @@
   </el-form>
 </template>
 <script>
-import { reactive } from "vue";
+import { reactive, getCurrentInstance } from "vue";
+import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import axios from "axios";
+
 export default {
   setup() {
     const loginForm = reactive({
-      username: "employee1",
-      password: "titaner",
+      account: "",
+      password: "",
     });
 
+    const store = useStore();
     const router = useRouter();
+    
     const login = async () => {
-
+      let response = await axios.post("http://127.0.0.1:3000/login", loginForm);
+      store.commit("setUser", response.data.user);
+      store.commit("setToken", response.data.token);
       router.push({
         name: "home",
       });
@@ -55,6 +54,7 @@ export default {
   padding: 35px 35px 15px 35px;
   box-shadow: 0 0 25px #cacaca;
   margin: 180px auto;
+
   h3 {
     text-align: center;
     margin-bottom: 20px;
