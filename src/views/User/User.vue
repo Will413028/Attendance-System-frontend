@@ -6,14 +6,21 @@
         :key="item.prop"
         :label="item.label"
         :prop="item.prop"
-        :width="item.width ? item.width : 125"
+        :width="item.width ? item.width : 200"
       />
-      <el-table-column fixed="right" label="Operations" width="180">
+      <el-table-column fixed="right" label="account unlock" width="180">
+        <template #default>
+          <el-button type="danger" size="small" @click="handleClick"
+            >lock</el-button
+          >
+          <el-button type="primary" size="small">unlock</el-button>
+        </template>
+      </el-table-column>
+      <el-table-column fixed="right" label="Attendances" width="180">
         <template #default>
           <el-button type="primary" size="small" @click="handleClick"
             >Detail</el-button
           >
-          <el-button type="primary" size="small">Edit</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -44,7 +51,7 @@ export default defineComponent({
       },
       {
         prop: "error_times",
-        label: "error_times",
+        label: "login error times",
       },
       {
         prop: "Attendances",
