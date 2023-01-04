@@ -11,7 +11,7 @@
       <template #dropdown>
         <el-dropdown-menu>
           <el-dropdown-item>About</el-dropdown-item>
-          <el-dropdown-item divided>Logout</el-dropdown-item>
+          <el-dropdown-item @click="logout" divided>Logout</el-dropdown-item>
         </el-dropdown-menu>
       </template>
     </el-dropdown>
@@ -20,15 +20,28 @@
 
 <script>
 import { defineComponent } from "vue";
+import { useRouter } from "vue-router";
+
 export default defineComponent({
   setup() {
+    const router = useRouter();
+
     let getImgage_src = (base) => {
       return new URL(`../assets/${base}`, import.meta.url).href;
     };
+    const logout = async () => {
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+      router.push({
+        name: "login",
+      });
+    };
+
     return {
       getImgage_src,
+      logout,
     };
-  }
+  },
 });
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-  <el-aside width='180px'>
+  <el-aside width="180px">
     <el-menu
       class="el-menu-vertical-demo"
       background-color="#545c64"
@@ -41,14 +41,20 @@
 </template>
 
 <script>
-import {useRouter} from 'vue-router';
+import { useRouter } from "vue-router";
 export default {
   setup() {
     const list = [
       {
+        path: "/home",
+        name: "home",
+        label: "home",
+        icon: "HomeFilled",
+      },
+      {
         path: "/user",
         name: "user",
-        label: "user_name",
+        label: "user_manage",
         icon: "user",
         url: "UserManage/UserManage",
       },
@@ -83,15 +89,15 @@ export default {
     const hasChildren = () => {
       return list.filter((item) => item.children);
     };
-    const clickMenu = (item) =>{
+    const clickMenu = (item) => {
       router.push({
         name: item.name,
-      })
+      });
     };
     return {
       noChildren,
       hasChildren,
-      clickMenu
+      clickMenu,
     };
   },
 };
