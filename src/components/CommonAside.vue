@@ -15,6 +15,15 @@
         <component class="icons" :is="item.icon"></component>
         <span>{{ item.label }}</span>
       </el-menu-item>
+      <el-menu-item
+        :index="item.path"
+        v-for="item in onlyAdmin()"
+        :key="item.path"
+        @click="clickMenu(item)"
+      >
+        <component class="icons" :is="item.icon"></component>
+        <span>{{ item.label }}</span>
+      </el-menu-item>
       <el-sub-menu
         :index="item.label"
         v-for="item in hasChildren()"
@@ -57,6 +66,7 @@ export default {
         label: "user_manage",
         icon: "user",
         url: "UserManage/UserManage",
+        role: "admin"
       },
       {
         label: "other",
@@ -83,11 +93,15 @@ export default {
     const router = useRouter();
 
     const noChildren = () => {
-      return list.filter((item) => !item.children);
+      return list.filter((item) => (!item.children && !item.role));
     };
 
     const hasChildren = () => {
       return list.filter((item) => item.children);
+    };
+    const onlyAdmin = () => {
+      let role = JSON.parse(localStorage.getItem('user')).role
+      return list.filter((item) => (item.role && role === "HR"));
     };
     const clickMenu = (item) => {
       router.push({
@@ -97,6 +111,7 @@ export default {
     return {
       noChildren,
       hasChildren,
+      onlyAdmin,
       clickMenu,
     };
   },

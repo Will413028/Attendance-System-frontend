@@ -2,7 +2,7 @@ const env = import.meta.env.MODE || "production";
 
 const EnvConfig = {
     development: {
-        baseApi: 'http://127.0.0.1:3000',
+        baseApi: 'https://fast-gorge-70763.herokuapp.com',
         mockApi: ""
     },
     test: {
@@ -10,7 +10,7 @@ const EnvConfig = {
         mockApi: ""
     },
     production: {
-        baseApi: '',
+        baseApi: 'https://fast-gorge-70763.herokuapp.com',
         mockApi: ""
     }
 }

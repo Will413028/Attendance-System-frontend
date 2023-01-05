@@ -3,7 +3,7 @@
     <el-col :span="15" style="margin-top: 20px">
       <el-card shadow="hover">
         <div class="user">
-          <img src="../../assets/vue.svg" />
+          <el-icon class="user" size="100px"><UserFilled /></el-icon>
           <div class="user-info">
             <p class="name">User</p>
             <p class="name">Employee</p>
@@ -27,9 +27,15 @@
         </el-table>
       </el-card>
     </el-col>
-    <el-card shadow="hover" style="margin-top: 20px; width: 450px; height: 800px">
+    <el-card
+      shadow="hover"
+      style="margin-top: 20px; width: 450px; height: 800px"
+    >
       <vue-qrcode :value="QRcodeData" :options="{ width: 400 }"></vue-qrcode>
-      <el-button style="margin-top: 50px; width: 400px; height: 50px" @click="clockin">
+      <el-button
+        style="margin-top: 50px; width: 400px; height: 50px"
+        @click="clockin"
+      >
         Clock in
       </el-button>
     </el-card>
@@ -48,7 +54,9 @@ import axios from "axios";
 export default defineComponent({
   setup() {
     const { proxy } = getCurrentInstance();
-    let user = JSON.parse(localStorage.getItem("user"))
+    let user = JSON.parse(localStorage.getItem("user"));
+    let token = JSON.parse(localStorage.getItem("token"));
+
     let attendanceData = ref([]);
     let QRcodeData = ref();
     let attendanceLabel = {
@@ -58,17 +66,21 @@ export default defineComponent({
       status: "status",
     };
     const getAttendanceList = async () => {
-      let data = { user_id: user.id }
+      let data = { user_id: user.id };
       let res = await proxy.$api.getTableData(data);
       attendanceData.value = res.data;
     };
     const getQRcodeData = async () => {
-      let createAttendanceURL = `http://127.0.0.1:3000/createAttendanceQRcode?user_id=${user.id}`;
-      QRcodeData.value = createAttendanceURL
-    }
+      let createAttendanceURL = `https://fast-gorge-70763.herokuapp.com/createAttendanceQRcode?user_id=${user.id}`;
+      QRcodeData.value = createAttendanceURL;
+    };
     const clockin = async () => {
-      let body = { user_id: user.id }
-      await axios.post("http://127.0.0.1:3000/attendance", body, { headers: { token: JSON.parse(localStorage.getItem("token")) } });
+      let body = { user_id: user.id };
+      await axios.post(
+        "https://fast-gorge-70763.herokuapp.com/attendance",
+        body,
+        { headers: { token: token } }
+      );
     };
     onMounted(() => {
       getQRcodeData();
@@ -78,7 +90,7 @@ export default defineComponent({
       attendanceData,
       attendanceLabel,
       QRcodeData,
-      clockin
+      clockin,
     };
   },
 });

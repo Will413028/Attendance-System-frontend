@@ -29,9 +29,12 @@ export default {
 
     const store = useStore();
     const router = useRouter();
-    
+
     const login = async () => {
-      let response = await axios.post("http://127.0.0.1:3000/login", loginForm);
+      let response = await axios.post(
+        "https://fast-gorge-70763.herokuapp.com/login",
+        loginForm
+      );
       store.commit("setUser", response.data.user);
       store.commit("setToken", response.data.token);
       router.push({

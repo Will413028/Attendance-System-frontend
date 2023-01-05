@@ -3,7 +3,7 @@
     <div class="r-content"></div>
     <el-dropdown>
       <span class="el-dropdown-link">
-        <img class="user" :src="getImgage_src('vue.svg')" />
+        <el-icon class="user" size="30px" color="white"><UserFilled /></el-icon>
         <el-icon class="el-icon--right">
           <arrow-down />
         </el-icon>

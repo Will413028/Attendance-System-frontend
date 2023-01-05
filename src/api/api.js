@@ -20,7 +20,7 @@ export default {
     },
     login(params) {
         return request({
-            url: 'http://127.0.0.1:3000/login',
+            url: 'https://fast-gorge-70763.herokuapp.com:3000/login',
             method: 'post',
             mock: false,
             data: params
@@ -28,7 +28,7 @@ export default {
     },
     post(params) {
         return request({
-            url: 'http://127.0.0.1:3000/attendance',
+            url: 'https://fast-gorge-70763.herokuapp.com/attendance',
             method: 'post',
             headers: { token: JSON.parse(localStorage.getItem("token")) },
             mock: false,
