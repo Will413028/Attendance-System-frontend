@@ -17,9 +17,9 @@ const routes = [
                 component: () => import('../views/User/User.vue')
             },
             {
-                path: '/page1',
-                name: 'page1',
-                component: () => import('../views/Page1.vue')
+                path: '/edituser',
+                name: 'edituser',
+                component: () => import('../views/User/EditUser.vue')
             },
             {
                 path: '/page2',
