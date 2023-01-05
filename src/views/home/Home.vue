@@ -5,12 +5,12 @@
         <div class="user">
           <el-icon class="user" size="100px"><UserFilled /></el-icon>
           <div class="user-info">
-            <p class="name">User</p>
-            <p class="name">Employee</p>
+            <p class="name" v-once> {{user.name}}</p>
+            <p class="name" v-once>{{user.role}}</p>
           </div>
         </div>
         <div class="clock-info">
-          <p>time of last clock in:<span>2022-12-31 08:00:00</span></p>
+          <p>Today is <span>{{new Date().toLocaleDateString()}}</span></p>
           <p>position of last clock in:<span>Taiepi city</span></p>
         </div>
       </el-card>
@@ -81,6 +81,7 @@ export default defineComponent({
         body,
         { headers: { token: token } }
       );
+      getAttendanceList()
     };
     onMounted(() => {
       getQRcodeData();
@@ -90,6 +91,7 @@ export default defineComponent({
       attendanceData,
       attendanceLabel,
       QRcodeData,
+      user,
       clockin,
     };
   },

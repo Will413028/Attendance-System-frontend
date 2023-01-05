@@ -10,7 +10,7 @@
       </span>
       <template #dropdown>
         <el-dropdown-menu>
-          <el-dropdown-item>About</el-dropdown-item>
+          <el-dropdown-item v-once>{{user.name}}</el-dropdown-item>
           <el-dropdown-item @click="logout" divided>Logout</el-dropdown-item>
         </el-dropdown-menu>
       </template>
@@ -26,9 +26,8 @@ export default defineComponent({
   setup() {
     const router = useRouter();
 
-    let getImgage_src = (base) => {
-      return new URL(`../assets/${base}`, import.meta.url).href;
-    };
+    let user = JSON.parse(localStorage.getItem("user"));
+
     const logout = async () => {
       localStorage.removeItem("user");
       localStorage.removeItem("token");
@@ -38,7 +37,7 @@ export default defineComponent({
     };
 
     return {
-      getImgage_src,
+      user,
       logout,
     };
   },
