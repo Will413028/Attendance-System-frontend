@@ -2,7 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 
 const routes = [
     {
-        path: '/home',
+        path: '/',
         component: () => import('../views/Main.vue'),
         redirect: '/home',
         children: [
@@ -14,7 +14,15 @@ const routes = [
             {
                 path: '/user',
                 name: 'user',
-                component: () => import('../views/User/User.vue')
+                component: () => import('../views/User/User.vue'),
+                beforeEnter: () => {
+                    let user = JSON.parse(localStorage.getItem('user'));
+
+                    if (user.role !== "HR") {
+                        return false;
+                    }
+                    return true;
+                },
             },
             {
                 path: '/edituser',
@@ -29,7 +37,7 @@ const routes = [
         ]
     },
     {
-        path: '/',
+        path: '/login',
         name: 'login',
         component: () => import('../views/Login.vue'),
     }
@@ -43,11 +51,11 @@ router.beforeEach(to => {
     let token = localStorage.getItem('token');
     let user = localStorage.getItem('user');
 
-    if (to.fullPath === '/') return;
+    if (to.fullPath === '/login') return;
 
     if (!token || !user) {
         localStorage.removeItem('token');
-        return '/';
+        return '/login';
     }
 
     return true;
