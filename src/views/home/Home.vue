@@ -3,19 +3,25 @@
     <el-col :span="15" style="margin-top: 20px">
       <el-card shadow="hover">
         <div class="user">
-          <el-icon class="user" size="100px"><UserFilled /></el-icon>
+          <el-icon class="user" size="100px">
+            <UserFilled />
+          </el-icon>
           <div class="user-info">
-            <p class="name" v-once> {{user.name}}</p>
-            <p class="name" v-once>{{user.role}}</p>
+            <p class="name" v-once>{{ user.name }}</p>
+            <p class="name" v-once>{{ user.role }}</p>
           </div>
         </div>
         <div class="clock-info">
-          <p>Today is <span>{{new Date().toLocaleDateString()}}</span></p>
-          <p>position of last clock in:<span>Taiepi city</span></p>
+          <p>
+            Today is <span>{{ new Date().toLocaleDateString() }}</span>
+          </p>
+          <p>
+            your position :<span> {{ currentPosition }} </span>
+          </p>
         </div>
       </el-card>
       <el-card shadow="hover" style="margin-top: 20px" height="450px">
-        <p>lastet clock-information</p>
+        <p>Lastet Attendance Information</p>
         <el-table :data="attendanceData">
           <el-table-column
             v-for="(val, key) in attendanceLabel"
@@ -59,6 +65,7 @@ export default defineComponent({
 
     let attendanceData = ref([]);
     let QRcodeData = ref();
+    let currentPosition = ref();
     let attendanceLabel = {
       attend_date: "attend_date",
       clock_in_time: "clock_in_time",
@@ -75,17 +82,35 @@ export default defineComponent({
       QRcodeData.value = createAttendanceURL;
     };
     const clockin = async () => {
+      await getposition();
       let body = { user_id: user.id };
       await axios.post(
         "https://fast-gorge-70763.herokuapp.com/attendance",
         body,
         { headers: { token: token } }
       );
-      getAttendanceList()
+      getAttendanceList();
     };
+    const getposition = async () => {
+      navigator.geolocation.getCurrentPosition((position) => {
+
+        let latitude = position.coords.latitude;
+
+        let longitude = position.coords.longitude;
+
+        let timestamp = position.timestamp;
+        currentPosition.value = {
+          latitude: latitude,
+          longitude: longitude,
+          timestamp: timestamp,
+        };
+      });
+    };
+
     onMounted(() => {
       getQRcodeData();
       getAttendanceList();
+      getposition();
     });
     return {
       attendanceData,
@@ -93,6 +118,7 @@ export default defineComponent({
       QRcodeData,
       user,
       clockin,
+      currentPosition,
     };
   },
 });
