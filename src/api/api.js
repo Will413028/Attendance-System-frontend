@@ -34,5 +34,14 @@ export default {
             mock: false,
             data: params
         })
+    },
+    updateUser(user_id, params) {
+        return request({
+            url: `/user/${user_id}`,
+            method: 'put',
+            headers: { token: JSON.parse(localStorage.getItem("token")) },
+            mock: false,
+            data: params
+        })
     }
 }
