@@ -10,7 +10,7 @@
       </el-input>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="updateUser"> updateUser </el-button>
+      <el-button type="primary" @click="updateUser"> update Password </el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -25,7 +25,21 @@ export default {
     });
     let user = JSON.parse(localStorage.getItem("user"));
     const updateUser = async () => {
-      let res = await proxy.$api.updateUser(user.id, userForm);
+      try {
+        await proxy.$api.updateUser(user.id, userForm);
+        ElMessage({
+          showClose: true,
+          message: "update password success",
+          type: "success",
+        });
+      } catch (err) {
+        ElMessage({
+          showClose: true,
+          message: `update password failed ${err}`,
+          type: "error",
+        });
+      }
+
     };
     return {
       userForm,

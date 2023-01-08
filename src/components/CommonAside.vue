@@ -41,13 +41,13 @@ export default {
       {
         path: "/edituser",
         name: "edituser",
-        label: "edituser",
+        label: "update password",
         icon: "setting",
       },
       {
         path: "/user",
         name: "user",
-        label: "user_manage",
+        label: "employee manage",
         icon: "user",
         role: "admin"
       },

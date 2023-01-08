@@ -6,7 +6,11 @@
       </el-input>
     </el-form-item>
     <el-form-item>
-      <el-input type="password" placeholder="password" v-model="loginForm.password">
+      <el-input
+        type="password"
+        placeholder="password"
+        v-model="loginForm.password"
+      >
       </el-input>
     </el-form-item>
     <el-form-item>
@@ -20,7 +24,6 @@ import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 
 export default {
-  
   setup() {
     const { proxy } = getCurrentInstance();
     const loginForm = reactive({
@@ -32,13 +35,25 @@ export default {
     const router = useRouter();
 
     const login = async () => {
-
-      let response = await proxy.$api.login(loginForm);
-      store.commit("setUser", response.user);
-      store.commit("setToken", response.token);
-      router.push({
-        name: "home",
-      });
+      try {
+        let response = await proxy.$api.login(loginForm);
+        store.commit("setUser", response.user);
+        store.commit("setToken", response.token);
+        router.push({
+          name: "home",
+        });
+        ElMessage({
+          showClose: true,
+          message: "Login success",
+          type: "success",
+        });
+      } catch (err) {
+        ElMessage({
+          showClose: true,
+          message: `Login failed`,
+          type: "error",
+        });
+      }
     };
     return {
       loginForm,
