@@ -58,6 +58,13 @@ export default {
         icon: "user",
         role: "admin",
       },
+      {
+        path: "/AbsentUser",
+        name: "AbsentUser",
+        label: "Absent Employee",
+        icon: "user",
+        role: "admin",
+      },
     ];
 
     const router = useRouter();
@@ -70,9 +77,7 @@ export default {
       return list.filter((item) => item.role && role === "HR");
     };
     const clickMenu = (item) => {
-      router.push({
-        name: item.name,
-      });
+      router.push({ name: item.name });
     };
     return {
       noRole,
