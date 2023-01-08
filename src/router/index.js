@@ -30,9 +30,9 @@ const routes = [
                 component: () => import('../views/User/EditUser.vue')
             },
             {
-                path: '/page2',
-                name: 'page2',
-                component: () => import('../views/Page2.vue')
+                path: '/Calendar',
+                name: 'Calendar',
+                component: () => import('../views/Calendar.vue')
             }
         ]
     },

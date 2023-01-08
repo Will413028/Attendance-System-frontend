@@ -44,5 +44,23 @@ export default {
             mock: false,
             data: params
         })
+    },
+    getHoliday(params){
+        return request({
+            url: '/holiday',
+            method: 'get',
+            headers: { token: JSON.parse(localStorage.getItem("token")) },
+            mock: false,
+            data: params
+        }) 
+    },
+    updateHoliday(params){
+        return request({
+            url: '/holiday',
+            method: 'post',
+            headers: { token: JSON.parse(localStorage.getItem("token")) },
+            mock: false,
+            data: params
+        }) 
     }
 }

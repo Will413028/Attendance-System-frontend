@@ -39,7 +39,6 @@ export default {
           type: "error",
         });
       }
-
     };
     return {
       userForm,
