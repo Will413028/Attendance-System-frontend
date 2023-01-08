@@ -7,8 +7,8 @@
             <UserFilled />
           </el-icon>
           <div class="user-info">
-            <p class="name" v-once>{{ user.name }}</p>
-            <p class="name" v-once>{{ user.role }}</p>
+            <p class="name" v-once> Naem: {{ user.name }}</p>
+            <p class="name" v-once> Role: {{ user.role }}</p>
           </div>
         </div>
         <div class="clock-info">
@@ -96,6 +96,10 @@ export default defineComponent({
         let QrcodeURL = getQRcodeURL(user.id, token, latitude, longitude, timestamp);
 
         QRcodeData.value = QrcodeURL;
+
+        
+
+
 
         currentPosition.value = {
           latitude: latitude,

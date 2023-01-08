@@ -9,11 +9,13 @@
         :width="item.width ? item.width : 200"
       />
       <el-table-column fixed="right" label="account unlock" width="180">
-        <template #default>
-          <el-button type="danger" size="small" @click="handleClick"
+        <template #default="scope">
+          <el-button type="danger" size="small" @click="lock(scope.row)"
             >lock</el-button
           >
-          <el-button type="primary" size="small">unlock</el-button>
+          <el-button type="primary" size="small" @click="unlock(scope.row)"
+            >unlock</el-button
+          >
         </template>
       </el-table-column>
       <el-table-column fixed="right" label="Attendances" width="180">
@@ -51,23 +53,59 @@ export default defineComponent({
       },
       {
         prop: "error_times",
-        label: "login error times",
-      },
-      {
-        prop: "Attendances",
-        label: "Attendances",
+        label: "Account Status",
       },
     ]);
     onMounted(() => {
       getUserData();
     });
+
     const getUserData = async () => {
       let res = await proxy.$api.getUserData();
-      userList.value = res.data.data;
+      userList.value = res.data.data.map((element) => {
+        element.error_times = element.error_times === 5 ? "Locked" : "Normal";
+        return element;
+      });
+    };
+    const lock = async (row) => {
+      let body = { error_times: 5 };
+      try {
+        await proxy.$api.updateUser(row.id, body);
+        ElMessage({
+          showClose: true,
+          message: `${row.name} is locked`,
+          type: "warning",
+        });
+      } catch (err) {
+        ElMessage({
+          showClose: true,
+          message: `lock failed: ${err}`,
+          type: "error",
+        });
+      }
+    };
+    const unlock = async (row) => {
+      let body = { error_times: 0 };
+      try {
+        await proxy.$api.updateUser(row.id, body);
+        ElMessage({
+          showClose: true,
+          message: `${row.name} is unlocked`,
+          type: "success",
+        });
+      } catch (err) {
+        ElMessage({
+          showClose: true,
+          message: `unlock failed: ${err}`,
+          type: "error",
+        });
+      }
     };
     return {
       userList,
       tableLabel,
+      lock,
+      unlock,
     };
   },
 });
