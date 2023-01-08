@@ -14,6 +14,7 @@ export default {
         return request({
             url: '/user',
             method: 'get',
+            headers: { token: JSON.parse(localStorage.getItem("token")) },
             data: params,
             mock: false
         })

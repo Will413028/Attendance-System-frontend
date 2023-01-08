@@ -7,8 +7,8 @@
             <UserFilled />
           </el-icon>
           <div class="user-info">
-            <p class="name" v-once> Naem: {{ user.name }}</p>
-            <p class="name" v-once> Role: {{ user.role }}</p>
+            <p class="name" v-once>Naem: {{ user.name }}</p>
+            <p class="name" v-once>Role: {{ user.role }}</p>
           </div>
         </div>
         <div class="clock-info">
@@ -66,6 +66,7 @@ export default defineComponent({
     let attendanceData = ref([]);
     let QRcodeData = ref();
     let currentPosition = ref();
+
     let attendanceLabel = {
       attend_date: "attend_date",
       clock_in_time: "clock_in_time",
@@ -78,10 +79,29 @@ export default defineComponent({
       attendanceData.value = res.data.data;
     };
     const clockin = async () => {
-      await getposition();
-      let body = { user_id: user.id };
+      let position = currentPosition;
 
-      let res = await proxy.$api.postAttendance(body);
+      let body = {
+        user_id: user.id,
+        latitude: position.value.latitude,
+        longitude: position.value.longitude,
+      };
+
+      try {
+        await proxy.$api.postAttendance(body);
+
+        ElMessage({
+          showClose: true,
+          message: `clock in success`,
+          type: "success",
+        });
+      } catch (error) {
+        ElMessage({
+          showClose: true,
+          message: `clock in failed: ${error}`,
+          type: "error",
+        });
+      }
 
       getAttendanceList();
     };
@@ -93,13 +113,15 @@ export default defineComponent({
 
         let timestamp = position.timestamp;
 
-        let QrcodeURL = getQRcodeURL(user.id, token, latitude, longitude, timestamp);
+        let QrcodeURL = getQRcodeURL(
+          user.id,
+          token,
+          latitude,
+          longitude,
+          timestamp
+        );
 
         QRcodeData.value = QrcodeURL;
-
-        
-
-
 
         currentPosition.value = {
           latitude: latitude,
