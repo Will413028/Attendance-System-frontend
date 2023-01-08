@@ -55,7 +55,7 @@
 
 <script>
 import { defineComponent, getCurrentInstance, onMounted, ref } from "vue";
-import axios from "axios";
+import getQRcodeURL from "../../api/QRcode";
 
 export default defineComponent({
   setup() {
@@ -75,30 +75,28 @@ export default defineComponent({
     const getAttendanceList = async () => {
       let data = { user_id: user.id };
       let res = await proxy.$api.getTableData(data);
-      attendanceData.value = res.data;
-    };
-    const getQRcodeData = async () => {
-      let createAttendanceURL = `https://fast-gorge-70763.herokuapp.com/createAttendanceQRcode?user_id=${user.id}`;
-      QRcodeData.value = createAttendanceURL;
+      attendanceData.value = res.data.data;
     };
     const clockin = async () => {
       await getposition();
       let body = { user_id: user.id };
-      await axios.post(
-        "https://fast-gorge-70763.herokuapp.com/attendance",
-        body,
-        { headers: { token: token } }
-      );
+
+      let res = await proxy.$api.postAttendance(body);
+
       getAttendanceList();
     };
     const getposition = async () => {
       navigator.geolocation.getCurrentPosition((position) => {
-
         let latitude = position.coords.latitude;
 
         let longitude = position.coords.longitude;
 
         let timestamp = position.timestamp;
+
+        let QrcodeURL = getQRcodeURL(user.id, token, latitude, longitude, timestamp);
+
+        QRcodeData.value = QrcodeURL;
+
         currentPosition.value = {
           latitude: latitude,
           longitude: longitude,
@@ -108,7 +106,6 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      getQRcodeData();
       getAttendanceList();
       getposition();
     });

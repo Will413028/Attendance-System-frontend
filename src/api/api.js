@@ -20,15 +20,15 @@ export default {
     },
     login(params) {
         return request({
-            url: 'https://fast-gorge-70763.herokuapp.com:3000/login',
+            url: '/login',
             method: 'post',
             mock: false,
             data: params
         })
     },
-    post(params) {
+    postAttendance(params) {
         return request({
-            url: 'https://fast-gorge-70763.herokuapp.com/attendance',
+            url: '/attendance',
             method: 'post',
             headers: { token: JSON.parse(localStorage.getItem("token")) },
             mock: false,

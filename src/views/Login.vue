@@ -18,10 +18,11 @@
 import { reactive, getCurrentInstance } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import axios from "axios";
 
 export default {
+  
   setup() {
+    const { proxy } = getCurrentInstance();
     const loginForm = reactive({
       account: "",
       password: "",
@@ -31,12 +32,10 @@ export default {
     const router = useRouter();
 
     const login = async () => {
-      let response = await axios.post(
-        "https://fast-gorge-70763.herokuapp.com/login",
-        loginForm
-      );
-      store.commit("setUser", response.data.user);
-      store.commit("setToken", response.data.token);
+
+      let response = await proxy.$api.login(loginForm);
+      store.commit("setUser", response.user);
+      store.commit("setToken", response.token);
       router.push({
         name: "home",
       });

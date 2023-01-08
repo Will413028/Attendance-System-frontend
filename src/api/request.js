@@ -13,7 +13,8 @@ service.interceptors.request.use((req) => {
 })
 
 service.interceptors.response.use((res) => {
-    const { code, data, message } = res.data
+    const { code, data, message } = res
+
     const status_code = res.status
     if (status_code === 200) {
         return data

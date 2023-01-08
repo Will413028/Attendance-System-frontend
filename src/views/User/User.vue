@@ -63,7 +63,7 @@ export default defineComponent({
     });
     const getUserData = async () => {
       let res = await proxy.$api.getUserData();
-      userList.value = res.data;
+      userList.value = res.data.data;
     };
     return {
       userList,
