@@ -30,11 +30,13 @@
 
 <script>
 import { defineComponent, getCurrentInstance, onMounted, ref } from "vue";
+import { useStore } from "vuex";
 
 export default defineComponent({
   setup() {
     const { proxy } = getCurrentInstance();
-
+    const store = useStore();
+    let numberOfAbsent = localStorage.getItem("numberOfAbsent");
     let attendanceData = ref([]);
     let attendanceLabel = {
       attend_date: "attend_date",
@@ -56,9 +58,10 @@ export default defineComponent({
 
       try {
         await proxy.$api.updateAttendance(row.id, body);
+
         ElMessage({
           showClose: true,
-          message: 'update Attendance is success',
+          message: "update Attendance is success",
           type: "success",
         });
       } catch (err) {
@@ -67,6 +70,13 @@ export default defineComponent({
           message: `updateAttendance failed: ${err}`,
           type: "error",
         });
+      }
+      let numberOfAbsent = numberOfAbsent - 1;
+
+      if (numberOfAbsent < 0) {
+        store.commit("clearNumberOfAbsent");
+      } else {
+        store.commit("setNumberOfAbsent", numberOfAbsent);
       }
       getAttendanceList();
     };

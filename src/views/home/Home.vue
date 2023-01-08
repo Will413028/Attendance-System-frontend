@@ -1,4 +1,20 @@
 <template>
+  <el-button
+    :data="LockedUser"
+    v-if="user.role !== `employee` && LockedUser > 0"
+    type="danger"
+    size="small"
+    @click="goToUserManagePage"
+    >{{ LockedUser }} User is Locked!</el-button
+  >
+  <el-button
+    :data="AbsentUser"
+    v-if="user.role !== `employee` && AbsentUser > 0"
+    type="danger"
+    size="small"
+    @click="goToAbsentUserPage"
+    >Have {{ AbsentUser }} Absent Employee!</el-button
+  >
   <el-row class="home" :gutter="20">
     <el-col :span="15" style="margin-top: 20px">
       <el-card shadow="hover">
@@ -14,9 +30,6 @@
         <div class="clock-info">
           <p>
             Today is <span>{{ new Date().toLocaleDateString() }}</span>
-          </p>
-          <p>
-            your position :<span> {{ currentPosition }} </span>
           </p>
         </div>
       </el-card>
@@ -55,18 +68,24 @@
 
 <script>
 import { defineComponent, getCurrentInstance, onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
 import getQRcodeURL from "../../api/QRcode";
+import { useStore } from "vuex";
+import moment from "moment";
 
 export default defineComponent({
   setup() {
+    const store = useStore();
+    const router = useRouter();
     const { proxy } = getCurrentInstance();
+
     let user = JSON.parse(localStorage.getItem("user"));
     let token = JSON.parse(localStorage.getItem("token"));
-
     let attendanceData = ref([]);
     let QRcodeData = ref();
     let currentPosition = ref();
-
+    let AbsentUser = ref();
+    let LockedUser = ref();
     let attendanceLabel = {
       attend_date: "attend_date",
       clock_in_time: "clock_in_time",
@@ -80,7 +99,6 @@ export default defineComponent({
     };
     const clockin = async () => {
       let position = currentPosition;
-
       let body = {
         user_id: user.id,
         latitude: position.value.latitude,
@@ -102,7 +120,6 @@ export default defineComponent({
           type: "error",
         });
       }
-
       getAttendanceList();
     };
     const getposition = async () => {
@@ -147,10 +164,43 @@ export default defineComponent({
         { enableHighAccuracy: true, timeout: 10000 }
       );
     };
+    const getAbsentUser = async () => {
+      let date = moment().format("YYYY-MM-DD");
 
-    onMounted(() => {
-      getAttendanceList();
-      getposition();
+      let body = { attend_date: date, status: "Absent" };
+      try {
+        let res = await proxy.$api.getTableData(body);
+        let numberOfAbsentUser = res.data.data.length;
+        store.commit("setNumberOfAbsent", numberOfAbsentUser);
+        AbsentUser.value = numberOfAbsentUser;
+      } catch (err) {}
+    };
+
+    const getLockedAccount = async () => {
+      let body = { error_times: 5 };
+      try {
+        let res = await proxy.$api.getUserData(body);
+        let numberOfLockedUser = res.data.data.length;
+        store.commit("setNumberOfLockedAccount", numberOfLockedUser);
+        LockedUser.value = numberOfLockedUser;
+      } catch (err) {}
+    };
+
+    const goToAbsentUserPage = async () => {
+      router.push({
+        name: "AbsentUser",
+      });
+    };
+    const goToUserManagePage = async () => {
+      router.push({
+        name: "user",
+      });
+    };
+    onMounted(async () => {
+      await getAttendanceList();
+      await getposition();
+      await getAbsentUser();
+      await getLockedAccount();
     });
     return {
       attendanceData,
@@ -159,6 +209,12 @@ export default defineComponent({
       user,
       clockin,
       currentPosition,
+      goToAbsentUserPage,
+      goToUserManagePage,
+      getLockedAccount,
+      getAbsentUser,
+      LockedUser,
+      AbsentUser,
     };
   },
 });

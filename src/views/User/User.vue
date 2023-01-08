@@ -18,13 +18,6 @@
           >
         </template>
       </el-table-column>
-      <el-table-column fixed="right" label="Attendances" width="180">
-        <template #default>
-          <el-button type="primary" size="small" @click="handleClick"
-            >Detail</el-button
-          >
-        </template>
-      </el-table-column>
     </el-table>
   </div>
 </template>
@@ -37,10 +30,12 @@ import {
   ref,
   reactive,
 } from "vue";
+import { useStore } from "vuex";
 
 export default defineComponent({
   setup() {
     const { proxy } = getCurrentInstance();
+    const store = useStore();
     const userList = ref([]);
     const tableLabel = reactive([
       {
@@ -56,6 +51,7 @@ export default defineComponent({
         label: "Account Status",
       },
     ]);
+    let numberOfLockedAccount = localStorage.getItem("numberOfLockedAccount");
     onMounted(() => {
       getUserData();
     });
@@ -76,6 +72,7 @@ export default defineComponent({
           message: `${row.name} is locked`,
           type: "warning",
         });
+        getUserData();
       } catch (err) {
         ElMessage({
           showClose: true,
@@ -93,12 +90,20 @@ export default defineComponent({
           message: `${row.name} is unlocked`,
           type: "success",
         });
+        getUserData();
       } catch (err) {
         ElMessage({
           showClose: true,
           message: `unlock failed: ${err}`,
           type: "error",
         });
+      }
+
+      let numberOfLockedAccount = numberOfLockedAccount - 1;
+      if (numberOfLockedAccount < 0) {
+        store.commit("clearNumberOfLockedAccount");
+      } else {
+        store.commit("setNumberOfLockedAccount", numberOfLockedAccount);
       }
     };
     return {

@@ -10,7 +10,6 @@
       </span>
       <template #dropdown>
         <el-dropdown-menu>
-          <el-dropdown-item v-once>{{user.name}}</el-dropdown-item>
           <el-dropdown-item @click="logout" divided>Logout</el-dropdown-item>
         </el-dropdown-menu>
       </template>
@@ -25,7 +24,6 @@ import { useRouter } from "vue-router";
 export default defineComponent({
   setup() {
     const router = useRouter();
-
     let user = JSON.parse(localStorage.getItem("user"));
 
     const logout = async () => {
