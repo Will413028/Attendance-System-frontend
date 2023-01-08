@@ -106,29 +106,46 @@ export default defineComponent({
       getAttendanceList();
     };
     const getposition = async () => {
-      navigator.geolocation.getCurrentPosition((position) => {
-        let latitude = position.coords.latitude;
+      if (!navigator.geolocation) {
+        ElMessage({
+          showClose: true,
+          message: "Geolocation is not supported by this browser.",
+          type: "error",
+        });
+      }
+      navigator.geolocation.getCurrentPosition(
+        (success) => {
+          let latitude = success.coords.latitude;
 
-        let longitude = position.coords.longitude;
+          let longitude = success.coords.longitude;
 
-        let timestamp = position.timestamp;
+          let timestamp = success.timestamp;
 
-        let QrcodeURL = getQRcodeURL(
-          user.id,
-          token,
-          latitude,
-          longitude,
-          timestamp
-        );
+          let QrcodeURL = getQRcodeURL(
+            user.id,
+            token,
+            latitude,
+            longitude,
+            timestamp
+          );
 
-        QRcodeData.value = QrcodeURL;
+          QRcodeData.value = QrcodeURL;
 
-        currentPosition.value = {
-          latitude: latitude,
-          longitude: longitude,
-          timestamp: timestamp,
-        };
-      });
+          currentPosition.value = {
+            latitude: latitude,
+            longitude: longitude,
+            timestamp: timestamp,
+          };
+        },
+        (err) => {
+          ElMessage({
+            showClose: true,
+            message: `getCurrentPosition failed: ${err}`,
+            type: "error",
+          });
+        },
+        { enableHighAccuracy: true, timeout: 10000 }
+      );
     };
 
     onMounted(() => {
