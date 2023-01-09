@@ -136,14 +136,14 @@ export default defineComponent({
 
           let longitude = success.coords.longitude;
 
-          let timestamp = success.timestamp;
+          let date = moment().format("YYYY-MM-DD HH:mm:ss");
 
           let QrcodeURL = getQRcodeURL(
             user.id,
             token,
             latitude,
             longitude,
-            timestamp
+            date
           );
 
           QRcodeData.value = QrcodeURL;
@@ -151,7 +151,7 @@ export default defineComponent({
           currentPosition.value = {
             latitude: latitude,
             longitude: longitude,
-            timestamp: timestamp,
+            timestamp: date,
           };
         },
         (err) => {
