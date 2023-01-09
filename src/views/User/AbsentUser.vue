@@ -64,6 +64,7 @@ export default defineComponent({
           message: "update Attendance is success",
           type: "success",
         });
+        await getAttendanceList();
       } catch (err) {
         ElMessage({
           showClose: true,
@@ -78,7 +79,6 @@ export default defineComponent({
       } else {
         store.commit("setNumberOfAbsent", numberOfAbsent);
       }
-      getAttendanceList();
     };
 
     onMounted(async () => {
@@ -88,10 +88,10 @@ export default defineComponent({
       attendanceData,
       attendanceLabel,
       editToPresent,
+      getAttendanceList
     };
   },
 });
 </script>
-
 <style lang="less" scoped>
 </style>
