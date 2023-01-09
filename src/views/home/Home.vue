@@ -50,7 +50,7 @@
       shadow="hover"
       style="margin-top: 20px; width: 450px; height: 800px"
     >
-      <vue-qrcode :value="QRcodeData" :options="{ width: 400 }"></vue-qrcode>
+      <vue-qrcode :value="QRcodeData" :options="{ width: 300 }"></vue-qrcode>
       <el-button
         style="margin-top: 50px; width: 400px; height: 50px"
         @click="clockin"
