@@ -2,7 +2,7 @@ const env = import.meta.env.MODE || "production";
 
 const EnvConfig = {
     development: {
-        baseApi: "http://localhost:3000",
+        baseApi: import.meta.env.VITE_BACKEND_HOST,
         mockApi: ""
     },
     test: {
