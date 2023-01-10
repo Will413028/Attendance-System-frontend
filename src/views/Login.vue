@@ -50,7 +50,7 @@ export default {
       } catch (err) {
         ElMessage({
           showClose: true,
-          message: `Login failed`,
+          message: `Login failed: ${err.response.data.message}`,
           type: "error",
         });
       }

@@ -31,11 +31,19 @@ export default {
     let user = JSON.parse(localStorage.getItem("user"));
 
     const getHolidayList = async () => {
-      let res = await proxy.$api.getHoliday();
-      let holidayList = res.map((item) => {
-        return { date: item.date, content: item.holiday_category };
-      });
-      holidayData.value = holidayList;
+      try {
+        let res = await proxy.$api.getHoliday();
+        let holidayList = res.map((item) => {
+          return { date: item.date, content: item.holiday_category };
+        });
+        holidayData.value = holidayList;
+      } catch (error) {
+        ElMessage({
+          showClose: true,
+          message: `Can not get holiday data: ${error.response.data.message}`,
+          type: "error",
+        });
+      }
     };
     const updateHoliday = async () => {
       try {
@@ -48,7 +56,7 @@ export default {
       } catch (err) {
         ElMessage({
           showClose: true,
-          message: `updateHoliday failed ${err}`,
+          message: `updateHoliday failed ${err.response.data.message}`,
           type: "error",
         });
       }

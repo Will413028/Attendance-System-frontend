@@ -116,7 +116,7 @@ export default defineComponent({
       } catch (error) {
         ElMessage({
           showClose: true,
-          message: `clock in failed: ${error}`,
+          message: `clock in failed: ${error.response.data.message}`,
           type: "error",
         });
       }
@@ -154,10 +154,10 @@ export default defineComponent({
             timestamp: date,
           };
         },
-        (err) => {
+        (error) => {
           ElMessage({
             showClose: true,
-            message: `getCurrentPosition failed: ${err}`,
+            message: `getCurrentPosition failed: ${error.response.data.message}`,
             type: "error",
           });
         },
@@ -183,6 +183,13 @@ export default defineComponent({
         let numberOfLockedUser = res.data.data.length;
         store.commit("setNumberOfLockedAccount", numberOfLockedUser);
         LockedUser.value = numberOfLockedUser;
+        if (numberOfLockedUser > 0) {
+          ElMessage({
+            showClose: true,
+            message: "Someone account is locked",
+            type: "warning",
+          });
+        }
       } catch (err) {}
     };
 

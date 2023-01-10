@@ -10,7 +10,11 @@
           :label="val"
         >
         </el-table-column>
-        <el-table-column fixed="right" label="Attendance Status" width="180">
+        <el-table-column
+          fixed="right"
+          label="Edit Attendance Status"
+          width="180"
+        >
           <template #default="scope">
             <el-button
               type="primary"
@@ -25,9 +29,6 @@
   </el-card>
 </template>
 
-
-
-
 <script>
 import { defineComponent, getCurrentInstance, onMounted, ref } from "vue";
 import { useStore } from "vuex";
@@ -36,7 +37,6 @@ export default defineComponent({
   setup() {
     const { proxy } = getCurrentInstance();
     const store = useStore();
-    let numberOfAbsent = localStorage.getItem("numberOfAbsent");
     let attendanceData = ref([]);
     let attendanceLabel = {
       attend_date: "attend_date",
@@ -61,14 +61,14 @@ export default defineComponent({
 
         ElMessage({
           showClose: true,
-          message: "update Attendance is success",
+          message: "Edit Attendance is success",
           type: "success",
         });
         await getAttendanceList();
       } catch (err) {
         ElMessage({
           showClose: true,
-          message: `updateAttendance failed: ${err}`,
+          message: `updateAttendance failed: ${err.response.data.message}`,
           type: "error",
         });
       }
@@ -80,7 +80,6 @@ export default defineComponent({
         store.commit("setNumberOfAbsent", numberOfAbsent);
       }
     };
-
     onMounted(async () => {
       await getAttendanceList();
     });
@@ -88,7 +87,7 @@ export default defineComponent({
       attendanceData,
       attendanceLabel,
       editToPresent,
-      getAttendanceList
+      getAttendanceList,
     };
   },
 });

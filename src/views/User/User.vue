@@ -51,17 +51,24 @@ export default defineComponent({
         label: "Account Status",
       },
     ]);
-    let numberOfLockedAccount = localStorage.getItem("numberOfLockedAccount");
     onMounted(() => {
       getUserData();
     });
 
     const getUserData = async () => {
-      let res = await proxy.$api.getUserData();
-      userList.value = res.data.data.map((element) => {
-        element.error_times = element.error_times === 5 ? "Locked" : "Normal";
-        return element;
-      });
+      try {
+        let res = await proxy.$api.getUserData();
+        userList.value = res.data.data.map((element) => {
+          element.error_times = element.error_times === 5 ? "Locked" : "Normal";
+          return element;
+        });
+      } catch (err) {
+        ElMessage({
+          showClose: true,
+          message: `Can not find users data because ${err.response.data.message}`,
+          type: "error",
+        });
+      }
     };
     const lock = async (row) => {
       let body = { error_times: 5 };
@@ -76,7 +83,7 @@ export default defineComponent({
       } catch (err) {
         ElMessage({
           showClose: true,
-          message: `lock failed: ${err}`,
+          message: `lock failed: ${error.response.data.message}`,
           type: "error",
         });
       }
@@ -94,7 +101,7 @@ export default defineComponent({
       } catch (err) {
         ElMessage({
           showClose: true,
-          message: `unlock failed: ${err}`,
+          message: `unlock failed: ${error.response.data.message}`,
           type: "error",
         });
       }

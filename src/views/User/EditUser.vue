@@ -10,7 +10,9 @@
       </el-input>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="updateUser"> update Password </el-button>
+      <el-button type="primary" @click="updateUser">
+        update Password
+      </el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -35,7 +37,7 @@ export default {
       } catch (err) {
         ElMessage({
           showClose: true,
-          message: `update password failed ${err}`,
+          message: `update password failed ${err.response.data.message}`,
           type: "error",
         });
       }
