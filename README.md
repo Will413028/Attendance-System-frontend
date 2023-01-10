@@ -22,7 +22,7 @@ Prerequest: Attendance-System-backend
     ``` 
 
 4. Setup .env file
-
+##### Important VITE_BACKEND_HOST Must be the same with Attendance-System-backend's host & port
     ```
     #.env example
     VITE_BACKEND_HOST=http://localhost:3000
