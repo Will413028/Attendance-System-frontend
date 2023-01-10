@@ -165,32 +165,34 @@ export default defineComponent({
       );
     };
     const getAbsentUser = async () => {
-      let date = moment().format("YYYY-MM-DD");
+      if (user.role === "HR") {
+        let date = moment().format("YYYY-MM-DD");
 
-      let body = { attend_date: date, status: "Absent" };
-      try {
-        let res = await proxy.$api.getTableData(body);
-        let numberOfAbsentUser = res.data.data.length;
-        store.commit("setNumberOfAbsent", numberOfAbsentUser);
-        AbsentUser.value = numberOfAbsentUser;
-      } catch (err) {}
+        let body = { attend_date: date, status: "Absent" };
+        try {
+          let res = await proxy.$api.getTableData(body);
+          let numberOfAbsentUser = res.data.data.length;
+          AbsentUser.value = numberOfAbsentUser;
+        } catch (err) {}
+      }
     };
 
     const getLockedAccount = async () => {
-      let body = { error_times: 5 };
-      try {
-        let res = await proxy.$api.getUserData(body);
-        let numberOfLockedUser = res.data.data.length;
-        store.commit("setNumberOfLockedAccount", numberOfLockedUser);
-        LockedUser.value = numberOfLockedUser;
-        if (numberOfLockedUser > 0) {
-          ElMessage({
-            showClose: true,
-            message: "Someone account is locked",
-            type: "warning",
-          });
-        }
-      } catch (err) {}
+      if (user.role === "HR") {
+        let body = { error_times: 5 };
+        try {
+          let res = await proxy.$api.getUserData(body);
+          let numberOfLockedUser = res.data.data.length;
+          LockedUser.value = numberOfLockedUser;
+          if (numberOfLockedUser > 0) {
+            ElMessage({
+              showClose: true,
+              message: "Someone account is locked",
+              type: "warning",
+            });
+          }
+        } catch (err) {}
+      }
     };
 
     const goToAbsentUserPage = async () => {
