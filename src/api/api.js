@@ -3,7 +3,7 @@ import request from "./request"
 export default {
     getTableData(params) {
         return request({
-            url: '/attendance',
+            url: '/attendances',
             method: 'get',
             headers: { token: JSON.parse(localStorage.getItem("token")) },
             data: params,
@@ -12,7 +12,7 @@ export default {
     },
     getUserData(params) {
         return request({
-            url: '/user',
+            url: '/users',
             method: 'get',
             headers: { token: JSON.parse(localStorage.getItem("token")) },
             data: params,
@@ -29,7 +29,7 @@ export default {
     },
     postAttendance(params) {
         return request({
-            url: '/attendance',
+            url: '/attendances',
             method: 'post',
             headers: { token: JSON.parse(localStorage.getItem("token")) },
             mock: false,
@@ -38,7 +38,7 @@ export default {
     },
     updateAttendance(id, params) {
         return request({
-            url: `/attendance/${id}`,
+            url: `/attendances/${id}`,
             method: 'put',
             headers: { token: JSON.parse(localStorage.getItem("token")) },
             mock: false,
@@ -47,7 +47,7 @@ export default {
     },
     updateUser(user_id, params) {
         return request({
-            url: `/user/${user_id}`,
+            url: `/users/${user_id}`,
             method: 'put',
             headers: { token: JSON.parse(localStorage.getItem("token")) },
             mock: false,
@@ -56,7 +56,7 @@ export default {
     },
     getHoliday(params){
         return request({
-            url: '/holiday',
+            url: '/holidays',
             method: 'get',
             headers: { token: JSON.parse(localStorage.getItem("token")) },
             mock: false,
@@ -65,7 +65,7 @@ export default {
     },
     updateHoliday(params){
         return request({
-            url: '/holiday',
+            url: '/holidays',
             method: 'post',
             headers: { token: JSON.parse(localStorage.getItem("token")) },
             mock: false,
