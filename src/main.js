@@ -4,7 +4,6 @@ import router from './router'
 import './assets/less/index.less'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import store from './store/index.js'
-import './api/mock.js'
 import api from './api/api'
 import VueQrcode from '@chenfengyuan/vue-qrcode';
 
