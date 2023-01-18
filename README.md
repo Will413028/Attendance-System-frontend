@@ -1,7 +1,11 @@
 # Attendance-System-frontend
 
-Prerequest: Attendance-System-backend
-            https://github.com/Will413028/Attendance-System-backend
+## Demo Link
+
+https://attendance-system.onrender.com
+
+## Attendance-System-backend Proejct
+https://github.com/Will413028/Attendance-System-backend
 ## How to run:
 
 1. Clone Project    
@@ -26,6 +30,7 @@ Prerequest: Attendance-System-backend
     ```
     #.env example
     VITE_BACKEND_HOST=http://localhost:3000
+    MODE=development
     ```
 5. Run project
 
@@ -33,10 +38,17 @@ Prerequest: Attendance-System-backend
     yarn dev
     ```
 
-## Test account
-    1. normal user
-        account: user1
-        password: titaner
-    2. admin user
+## Test Account
+    1. Admin user
         account: admin
         password: tiadmin
+    2. Normal user
+        account: user1
+        password: titaner
+        account: user2
+        password: titaner
+    3. Locked user
+        account: user3
+        password: titaner
+        account: user4
+        password: titaner
